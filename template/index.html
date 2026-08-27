@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 对话创作</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>" />
+  <link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" id="brand">AI</div>
+    <nav class="nav-links" id="navLinks"></nav>
+  </header>
+
+  <div class="chat-wrap glass">
+    <div class="chat-header">
+      <div class="chat-title">
+        <span class="chat-dot"></span>
+        <span id="chatTitle">AI 创作助手</span>
+      </div>
+      <button class="set-toggle" id="settingsToggle">⚙ 风格设置</button>
+    </div>
+
+    <div class="chat-settings" id="chatSettings" hidden>
+      <div class="set-row">
+        <span class="set-label">风格</span>
+        <div class="chips" id="styleChips"></div>
+      </div>
+      <div class="set-row">
+        <span class="set-label">尺寸</span>
+        <div class="chips" id="sizeChips"></div>
+      </div>
+      <div class="set-row">
+        <span class="set-label">数量</span>
+        <div class="chips" id="variantChips">
+          <div class="chip active" data-n="1">1 张</div>
+          <div class="chip" data-n="2">2 张</div>
+          <div class="chip" data-n="4">4 张</div>
+        </div>
+      </div>
+      <div class="set-row video-row" id="videoRow" hidden>
+        <span class="set-label">类型</span>
+        <div class="set-hint">多镜头静态分镜，自动拼接成片（无运镜）</div>
+      </div>
+    </div>
+
+    <div class="chat-log" id="chatLog"></div>
+
+    <div class="chat-input glass">
+      <textarea id="prompt" rows="1" placeholder="和 AI 说说你的需求，例如：清新草本助眠茶饮，熬夜上班族"></textarea>
+      <div class="chat-foot">
+        <div class="examples" id="examples"></div>
+        <button id="genBtn" class="gen-btn">发送 ✈</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card glass">
+      <button class="modal-close" data-close>✕</button>
+      <div class="modal-media" id="modalMedia"></div>
+      <div class="modal-info">
+        <h3 id="modalTitle">作品详情</h3>
+        <p id="modalMeta" class="muted"></p>
+        <div class="modal-actions">
+          <a id="modalDownload" class="dl-btn" download>⬇ 下载成品</a>
+          <button id="modalDelete" class="dl-btn ghost">🗑 删除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <span id="footBrand">AI 创作</span> · 对话框式创作 · 由硅基流动免费生图 + PIL 本地排版引擎驱动
+  </footer>
+
+  <script src="static/config.js"></script>
+  <script src="static/app.js"></script>
+</body>
+</html>
