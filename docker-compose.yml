@@ -1,0 +1,17 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - GATEWAY_PORT=8080
+      # 可选: 在此注入 Key, 会自动覆盖镜像内的 .env 默认值
+      # - VIDEO_PROVIDER=auto
+      # - ZHIPU_API_KEY=你的智谱Key
+      # - DASHSCOPE_API_KEY=你的通义万相Key
+      # - KLING_API_KEY=你的可灵Key
+      # - MINIMAX_API_KEY=你的海螺Key
+      # - HUNYUAN_API_KEY=你的混元Key
+      # - POLLINATIONS_API_KEY=你的PollinationsKey
+      # - SF_API_KEY=你的硅基流动Key
+    restart: unless-stopped
