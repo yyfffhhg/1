@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI 创意工坊 · 统一入口</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:#e8eaff;
+    background:#0b0d1f;display:flex;overflow:hidden}
+  /* ---------- 侧边栏 ---------- */
+  .side{width:248px;flex-shrink:0;height:100vh;display:flex;flex-direction:column;
+    background:linear-gradient(180deg,#11132e,#0b0d1f);border-right:1px solid rgba(255,255,255,.08);padding:22px 16px}
+  .brand{font-size:22px;font-weight:800;margin-bottom:4px;
+    background:linear-gradient(90deg,#7c7bff,#ff6b9d);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .tagline{color:#8b90b5;font-size:12.5px;margin-bottom:22px}
+  .nav{display:flex;flex-direction:column;gap:8px;overflow:auto}
+  .item{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:12px;
+    cursor:pointer;color:#c7cbf0;transition:.18s;border:1px solid transparent}
+  .item:hover{background:rgba(255,255,255,.06)}
+  .item.active{background:rgba(124,123,255,.16);border-color:rgba(124,123,255,.5);color:#fff}
+  .ic{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-size:19px;
+    background:linear-gradient(120deg,var(--a),var(--b));box-shadow:0 4px 12px rgba(0,0,0,.35)}
+  .nm{font-size:14.5px;font-weight:600;line-height:1.2}
+  .pr{font-size:11px;color:#8b90b5;margin-top:2px}
+  .foot{margin-top:auto;color:#6b7099;font-size:11.5px;line-height:1.6}
+  /* ---------- 主区 ---------- */
+  .main{flex:1;display:flex;flex-direction:column;position:relative}
+  .topbar{height:52px;flex-shrink:0;display:flex;align-items:center;gap:12px;padding:0 20px;
+    border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+  .cur{font-size:15px;font-weight:700}
+  .live{margin-left:auto;font-size:12px;color:#34d399;display:flex;align-items:center;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399}
+  .frame{flex:1;width:100%;border:0;background:#000}
+  .loading{position:absolute;inset:52px 0 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    color:#8b90b5;font-size:14px;pointer-events:none;background:rgba(11,13,31,.45);z-index:5}
+  .loading .ring{width:32px;height:32px;border-radius:50%;border:3px solid rgba(255,255,255,.15);border-top-color:#7c7bff;animation:rot .8s linear infinite}
+  @keyframes rot{to{transform:rotate(360deg)}}
+  .addr{margin-top:8px;font-size:11px;color:#8b90b5;word-break:break-all}
+  @media (max-width:720px){
+    body{flex-direction:column;overflow:auto}
+    .side{width:100%;height:auto;flex-direction:row;align-items:center;gap:10px;padding:10px 12px;border-right:0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{font-size:17px;margin:0;white-space:nowrap}
+    .tagline{display:none}
+    .nav{flex-direction:row;overflow-x:auto;gap:6px;flex:1}
+    .item{padding:7px 10px;gap:6px;white-space:nowrap}
+    .item .pr{display:none}
+    .foot{display:none}
+    .main{min-height:calc(100vh - 54px)}
+    .loading{inset:52px 0 0 0}
+  }
+</style>
+</head>
+<body>
+  <aside class="side">
+    <div class="brand">AI 创意工坊</div>
+    <div class="tagline">9 个站点 · 一个入口 · 公网可分享</div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot">单端口网关 · 全站一处可达<br><span id="addr"></span></div>
+  </aside>
+  <section class="main">
+    <div class="topbar">
+      <div class="cur" id="curName">电商生图</div>
+      <div class="live"><span class="dot"></span> 服务在线</div>
+    </div>
+    <div class="loading" id="loading"><div class="ring"></div>正在加载模块…</div>
+    <iframe class="frame" id="frame"></iframe>
+  </section>
+
+<script>
+const SITES = [
+  {key:"ecom",     name:"电商生图",     port:8011, icon:"🛍️", a:"#ff7a18", b:"#ffb347"},
+  {key:"portrait", name:"AI写真馆",    port:8012, icon:"📸", a:"#7c7bff", b:"#ff6b9d"},
+  {key:"packaging",name:"AI包装设计",   port:8013, icon:"📦", a:"#2a9d5c", b:"#d4af37"},
+  {key:"poster",   name:"AI海报工厂",   port:8014, icon:"🖼️", a:"#3b6cff", b:"#7c3aed"},
+  {key:"home",     name:"AI家装设计",   port:8015, icon:"🛋️", a:"#0ea5a4", b:"#22c55e"},
+  {key:"food",     name:"AI餐饮视觉",   port:8016, icon:"🍜", a:"#ff5e3a", b:"#ff9500"},
+  {key:"fitting",  name:"AI试衣间",     port:8017, icon:"👗", a:"#ec4899", b:"#8b5cf6"},
+  {key:"video",    name:"电商一键生视频",port:8018, icon:"🎞️", a:"#06b6d4", b:"#3b82f6"},
+  {key:"comic",    name:"AI漫剧",       port:8019, icon:"🎬", a:"#a21caf", b:"#22d3ee"},
+];
+const nav = document.getElementById("nav");
+const frame = document.getElementById("frame");
+const curName = document.getElementById("curName");
+SITES.forEach((s, i) => {
+  const el = document.createElement("div");
+  el.className = "item" + (i === 0 ? " active" : "");
+  el.style.setProperty("--a", s.a);
+  el.style.setProperty("--b", s.b);
+  el.innerHTML = `<div class="ic">${s.icon}</div><div><div class="nm">${s.name}</div><div class="pr">:${s.port}</div></div>`;
+  el.onclick = () => {
+    document.querySelectorAll(".item").forEach(n => n.classList.remove("active"));
+    el.classList.add("active");
+    curName.textContent = s.name;
+    showLoading();
+    frame.src = `/s/${s.key}/`;
+    window.scrollTo(0,0);
+  };
+  nav.appendChild(el);
+});
+
+// 显示当前访问地址 (公网隧道 / 局域网均可, 方便分享)
+document.getElementById("addr").textContent =
+  location.protocol + "//" + location.host;
+
+// iframe 加载提示
+const loading = document.getElementById("loading");
+function showLoading() { loading.style.display = "flex"; }
+frame.addEventListener("load", () => { loading.style.display = "none"; });
+
+// 初始加载第一个站点 (统一经网关 /s/<key>/ 路由)
+showLoading();
+frame.src = `/s/${SITES[0].key}/`;
+</script>
+</body>
+</html>
