@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: ai-visual-studio
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: VIDEO_PROVIDER
+        value: volcengine
+      - key: VOLC_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: SF_API_KEY
+        sync: false
