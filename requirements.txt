@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+httpx
+pillow
+imageio
+imageio-ffmpeg
+numpy
