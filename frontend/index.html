@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>电商生图 Studio · AI 视觉工厂</title>
+<link rel="stylesheet" href="/static/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>" />
+</head>
+<body>
+  <div class="aurora"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🎨</span>
+      <div class="brand-txt">
+        <h1>电商生图 Studio</h1>
+        <p>AI 视觉工厂 · 一句话生成专业级电商素材</p>
+      </div>
+    </div>
+    <div class="brand-right">
+      <span class="badge">FLUX 生图 · 服务端中文排版</span>
+    </div>
+  </header>
+
+  <!-- 品类导航 -->
+  <nav class="catnav" id="catnav"></nav>
+
+  <main class="layout">
+    <!-- 左侧配置面板 -->
+    <section class="panel">
+      <div class="panel-head">
+        <span class="cat-icon" id="catIcon">🖼️</span>
+        <div>
+          <h2 id="catName">AI海报工厂</h2>
+          <p id="catDesc">一句话生成营销海报</p>
+        </div>
+      </div>
+
+      <label class="field-label">描述 / 主题</label>
+      <textarea id="prompt" rows="3" placeholder="例如：清新草本助眠茶饮，熬夜上班族"></textarea>
+
+      <label class="field-label">品牌 / 名称 <span class="opt">（可选）</span></label>
+      <input id="name" type="text" placeholder="例如：茶里 · 给名字/产品署名" />
+
+      <label class="field-label">视觉风格</label>
+      <div class="chips" id="styleChips"></div>
+
+      <label class="field-label">输出尺寸</label>
+      <div class="chips" id="sizeChips"></div>
+
+      <button id="genBtn" class="gen-btn">
+        <span class="gen-ico">✨</span><span id="genBtnTxt">立即生成</span>
+      </button>
+      <p class="hint" id="hint">提示：描述越具体，画面越精准。视频品类将生成多镜头运镜短片。</p>
+    </section>
+
+    <!-- 右侧画廊 -->
+    <section class="gallery-wrap">
+      <div class="gallery-head">
+        <h3>作品画廊</h3>
+        <span class="count" id="count">0 张</span>
+      </div>
+      <div class="gallery" id="gallery">
+        <div class="empty" id="empty">
+          <div class="empty-emoji">🪄</div>
+          <p>在左侧输入描述，点击「立即生成」<br/>AI 将为你产出成品视觉素材</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 预览模态 -->
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-media" id="modalMedia"></div>
+      <div class="modal-bar">
+        <span id="modalMeta">—</span>
+        <a id="modalDownload" class="dl-btn" download>⬇ 下载</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">电商生图 Studio · 本地部署 · 免 Key 调用 FLUX + 服务端 PIL 排版</footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
